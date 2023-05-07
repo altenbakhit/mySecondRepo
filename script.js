@@ -1,9 +1,24 @@
-const title = 1
-const screens = 2
-const screenPrice = 3
-const rollback = 4
-const fullPrice = 5
-const adaptive = 6
+const title = "mySecondProject"
+console.log(title);
 
-alert("Hello world!");
-console.log("Hello world!");
+const screens = "Простые, Сложные, Интерактивные"
+console.log(screens.length);
+console.log(screens.toLowerCase());
+console.log(screens.split(", "));
+
+const currency = "tenge"
+
+const screenPrice = 1400
+console.log(`Стоимость верстки экранов ${screenPrice} ${currency}`);
+
+const rollback = 99
+
+const fullPrice = 1000000
+console.log(fullPrice);
+console.log(`Стоимость разработки сайта ${fullPrice} ${currency}`);
+console.log(fullPrice * (rollback / 100));
+
+const adaptive = true
+console.log(adaptive);
+
+
