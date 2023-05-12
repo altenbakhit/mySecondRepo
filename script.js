@@ -1,40 +1,67 @@
 'use strict'
 
-// Объявили переменные
-let title = prompt("Как называется ваш проект?")
-let screens = prompt("Какие типы экранов нужно разработать?")
-let screenPrice = +prompt("Сколько будет стоить данная работа?")
-let adaptive = confirm("Нужен ли адаптив на сайте?")
-
+// 1. Объявили переменные
+let title
+let screens
+let screenPrice
+let adaptive
 let rollback = 10
-let allServicePrice
+let allServicePrices
 let fullPrice
 let servicePercentPrice
+let service1
+let service2
 
-let service1 = prompt("Какой дополнительный тип услуги нужен?")
-let servicePrice1 = +prompt("Сколько это будет стоить?")
-let service2 = prompt("Какой дополнительный тип услуги нужен?")
-let servicePrice2 = +prompt("Сколько это будет стоить?")
+const isNumber = function (num) {
+    return !isNaN(parseFloat(num)) && isFinite(num)
+}
 
 // Описали функции с которыми мы будет работать
+const asking = function () {
+    title = prompt("Как называется ваш проект?", "Проект")
+    screens = prompt("Какие типы экранов нужно разработать?", "Простые, Сложные")
+
+    do {
+        screenPrice = prompt("Сколько будет стоить данная работа?")
+    } while (!isNumber(screenPrice))
+
+    adaptive = confirm("Нужен ли адаптив на сайте?")
+}
+
 const getAllServicePrices = function () {
-    return servicePrice1 + servicePrice2
+    let sum = 0
+
+    for (let i = 0; i < 2; i++) {
+        let price = 0
+        if (i === 0) {
+            service1 = prompt("Какой дополнительный тип услуги нужен?")
+        } else if (i === 1) {
+            service2 = prompt("Какой дополнительный тип услуги нужен?")
+        }
+
+        do {
+            price = prompt("Сколько это будет стоить?")
+        } while (!isNumber(price))
+
+        sum += +price
+    }
+
+    return sum
 }
 
 const getFullPrice = function () {
-    return screenPrice + allServicePrice
-}
-
-const getTitle = function () {
-    return title.trim()[0].toUpperCase() + title.trim().substring(1).toLowerCase()
+    return +screenPrice + allServicePrices
 }
 
 const getServicePercentPrices = function () {
     return fullPrice - (fullPrice * (rollback / 100))
 }
 
-const showTypeOf = function (variable) {
-    console.log(variable, typeof varigiable);
+const getTitle = function () {
+    if (title === null) {
+        return ""
+    }
+    return title.trim()[0].toUpperCase() + title.trim().substr(1).toLowerCase()
 }
 
 const getRollbackMassage = function (price) {
@@ -50,17 +77,16 @@ const getRollbackMassage = function (price) {
 }
 
 // Переопределили значение определенным переменным, мы назначили значением данных переменных результат выполнения определенных функции
-allServicePrice = getAllServicePrices()
+asking()
+allServicePrices = getAllServicePrices()
 fullPrice = getFullPrice()
-servicePercentPrice = getTitle()
 title = getTitle()
+servicePercentPrice = getTitle()
 
-// Запускаем функцию showTypeOf и передаем туда некоторые переменные
-showTypeOf(title)
-showTypeOf(screenPrice)
-showTypeOf(adaptive)
 
 // Вызываем все необходимое в консоли
+console.log("allServicePrices", allServicePrices)
+
 console.log(getRollbackMassage(fullPrice));
 console.log(typeof title);
 console.log(typeof screenPrice);
@@ -69,4 +95,4 @@ console.log(typeof adaptive);
 console.log(screens.length);
 console.log(servicePercentPrice);
 
-console.log("Стоимость верстки экранов " + screenPrice + " юаней" + " и " + "Стоимость разработки сайта " + fullPrice + " юаней")
+console.log("Стоимость верстки экранов " + screenPrice + " юаней" + " и " + "Стоимость разработки сайта " + fullPrice + " юаней");
