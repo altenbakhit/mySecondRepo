@@ -1,36 +1,72 @@
-const title = prompt("Как называется ваш проект?", "Проект №1");
-const screens = prompt("Какие типы экранов нужно разработать?", "Простые, Сложные, Интерактивные");
-const currency = "rubles";
-const screenPrice = prompt("Сколько будет стоить данная работа?", "1400");
-const adaptive = confirm("Нужен ли адаптив на сайте?", "true");
-const service1 = +prompt("Какой дополнительный тип услуги нужен?", "servicePrice1, servicePrice2");
-const service2 = +prompt("Какой дополнительный тип услуги нужен?", "servicePrice1, servicePrice2");
-const servicePrice1 = 1000;
-const servicePrice2 = 2000;
-const selectedServicePrice = (service1 === "servicePrice1" ? servicePrice1 : 0) + (service2 === "servicePrice1" ? servicePrice1 : 0) + (service1 === "servicePrice2" ? servicePrice2 : 0) + (service2 === "servicePrice2" ? servicePrice2 : 0);
-const fullPrice = screenPrice + selectedServicePrice;
-const percent = 10
-const rollback = fullPrice * (percent / 100);
-const servicePercentPrice = Math.ceil(fullPrice - rollback);
+'use strict'
 
-if (fullPrice > 30000) {
-    console.log("Даем скидку в 10%");
-} else if (fullPrice >= 15000 && fullPrice <= 30000) {
-    console.log("Даем скидку в 5%");
-} else if (fullPrice < 15000 && fullPrice > 0) {
-    console.log("Скидка не предусмотрена");
-} else {
-    console.log("Что то пошло не так");
+// Объявили переменные
+let title = prompt("Как называется ваш проект?")
+let screens = prompt("Какие типы экранов нужно разработать?")
+let screenPrice = +prompt("Сколько будет стоить данная работа?")
+let adaptive = confirm("Нужен ли адаптив на сайте?")
+
+let rollback = 10
+let allServicePrice
+let fullPrice
+let servicePercentPrice
+
+let service1 = prompt("Какой дополнительный тип услуги нужен?")
+let servicePrice1 = +prompt("Сколько это будет стоить?")
+let service2 = prompt("Какой дополнительный тип услуги нужен?")
+let servicePrice2 = +prompt("Сколько это будет стоить?")
+
+// Описали функции с которыми мы будет работать
+const getAllServicePrices = function () {
+    return servicePrice1 + servicePrice2
 }
 
-console.log()
-console.log(title);
+const showTypeOf = function (variable) {
+    console.log(variable, typeof variable);
+}
+
+const getFullPrice = function () {
+    return screenPrice + allServicePrice
+}
+
+const getServicePercentPrices = function () {
+    return fullPrice - (fullPrice * (rollback / 100))
+}
+
+const getTitle = function () {
+    return title.trim()[0].toUpperCase() + title.trim().substring(1).toLowerCase()
+}
+
+const getRollbackMassage = function (price) {
+    if (price >= 30000) {
+        return "Даем скидку в 10%"
+    } else if (price >= 15000 && price < 30000) {
+        return "Даем скидку в 5%"
+    } else if (price >= 0 && price < 15000) {
+        return "Скидка не предусмотрена"
+    } else {
+        return "Что то пошло не так"
+    }
+}
+
+// Переопределили значение определенным переменным, мы назначили значением данных переменных результат выполнения определенных функции
+allServicePrice = getAllServicePrices()
+fullPrice = getFullPrice()
+servicePercentPrice = getTitle()
+title = getTitle()
+
+// Запускаем функцию showTypeOf и передаем туда некоторые переменные
+showTypeOf(title)
+showTypeOf(screenPrice)
+showTypeOf(adaptive)
+
+// Вызываем все необходимое в консоли
+console.log(getRollbackMassage(fullPrice));
+console.log(typeof title);
+console.log(typeof screenPrice);
+console.log(typeof adaptive);
+
 console.log(screens.length);
-console.log(screens.toLowerCase());
-console.log(screens.split(", "));
-console.log(`Стоимость верстки экранов ${screenPrice} ${currency}`);
-console.log(fullPrice);
-console.log(`Стоимость разработки сайта ${fullPrice} ${currency}`);
-console.log(fullPrice * (rollback / 100));
-console.log(adaptive);
-console.log(fullPrice);
+console.log(servicePercentPrice);
+
+console.log("Стоимость верстки экранов " + screenPrice + " юаней" + " и " + "Стоимость разработки сайта " + fullPrice + " юаней")
