@@ -21,20 +21,20 @@ const getAllServicePrices = function () {
     return servicePrice1 + servicePrice2
 }
 
-const showTypeOf = function (variable) {
-    console.log(variable, typeof variable);
-}
-
 const getFullPrice = function () {
     return screenPrice + allServicePrice
+}
+
+const getTitle = function () {
+    return title.trim()[0].toUpperCase() + title.trim().substring(1).toLowerCase()
 }
 
 const getServicePercentPrices = function () {
     return fullPrice - (fullPrice * (rollback / 100))
 }
 
-const getTitle = function () {
-    return title.trim()[0].toUpperCase() + title.trim().substring(1).toLowerCase()
+const showTypeOf = function (variable) {
+    console.log(variable, typeof varigiable);
 }
 
 const getRollbackMassage = function (price) {
