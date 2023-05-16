@@ -1,98 +1,83 @@
-'use strict'
+'use strict';
 
-// 1. Объявили переменные
-let title
-let screens
-let screenPrice
-let adaptive
-let rollback = 10
-let allServicePrices
-let fullPrice
-let servicePercentPrice
-let service1
-let service2
-
-const isNumber = function (num) {
-    return !isNaN(parseFloat(num)) && isFinite(num)
-}
-
-// Описали функции с которыми мы будет работать
-const asking = function () {
-    title = prompt("Как называется ваш проект?", "Проект")
-    screens = prompt("Какие типы экранов нужно разработать?", "Простые, Сложные")
-
-    do {
-        screenPrice = prompt("Сколько будет стоить данная работа?")
-    } while (!isNumber(screenPrice))
-
-    adaptive = confirm("Нужен ли адаптив на сайте?")
-}
-
-const getAllServicePrices = function () {
-    let sum = 0
-
-    for (let i = 0; i < 2; i++) {
-        let price = 0
-        if (i === 0) {
-            service1 = prompt("Какой дополнительный тип услуги нужен?")
-        } else if (i === 1) {
-            service2 = prompt("Какой дополнительный тип услуги нужен?")
-        }
+const appData = {
+    title: '',
+    screens: '',
+    screenPrice: 0,
+    adaptive: true,
+    rollback: 10,
+    allServicePrices: 0,
+    fullPrice: 0,
+    servicePercentPrice: 0,
+    service1: '',
+    service2: '',
+    asking: function () {
+        this.title = prompt("Как называется ваш проект?", "Проект");
+        this.screens = prompt("Какие типы экранов нужно разработать?", "Простые, Сложные");
 
         do {
-            price = prompt("Сколько это будет стоить?")
-        } while (!isNumber(price))
+            this.screenPrice = prompt("Сколько будет стоить данная работа?");
+        } while (!this.isNumber(this.screenPrice));
 
-        sum += +price
+        this.adaptive = confirm("Нужен ли адаптив на сайте?");
+    },
+    start: function () {
+        this.asking(); // Вызываем метод asking
+        this.allServicePrices = this.getAllServicePrice(); // Вызываем метод getAllServicePrice
+        this.fullPrice = this.getFullPrice(); // Вызываем метод getFullPrice
+        this.servicePercentPrice = this.getServicePercentPrice(); // Вызываем метод getServicePercentPrice
+        this.title = this.getTitle(); // Вызываем метод getTitle
+        this.logger(); // Вызываем метод logger
+    },
+    isNumber: function (num) {
+        return !isNaN(parseFloat(num)) && isFinite(num);
+    },
+    getAllServicePrice: function () {
+        let sum = 0;
+
+        for (let i = 0; i < 2; i++) {
+            let price = 0;
+
+            if (i === 0) {
+                this.service1 = prompt("Какой дополнительный тип услуги нужен?");
+            } else if (i === 1) {
+                this.service2 = prompt("Какой дополнительный тип услуги нужен?");
+            }
+
+            do {
+                price = prompt("Сколько это будет стоить?");
+            } while (!this.isNumber(price));
+
+            sum += +price;
+        }
+
+        return sum;
+    },
+    getFullPrice: function () {
+        return +this.screenPrice + this.allServicePrices;
+    },
+    getServicePercentPrice: function () {
+        return this.fullPrice - (this.fullPrice * (this.rollback / 100));
+    },
+    getTitle: function () {
+        return this.title.trim()[0].toUpperCase() + this.title.trim().substring(1).toLowerCase();
+    },
+    getRollbackMassage: function (price) {
+        if (price >= 30000) {
+            return "Даем скидку в 10%";
+        } else if (price >= 15000 && price < 30000) {
+            return "Даем скидку в 5%";
+        } else if (price >= 0 && price < 15000) {
+            return "Скидка не предусмотрена";
+        } else {
+            return "Что-то пошло не так";
+        }
+    },
+    logger: function () {
+        for (let key in this) {
+            console.log(key + ": " + this[key]);
+        }
     }
+};
 
-    return sum
-}
-
-const getFullPrice = function () {
-    return +screenPrice + allServicePrices
-}
-
-const getServicePercentPrices = function () {
-    return fullPrice - (fullPrice * (rollback / 100))
-}
-
-const getTitle = function () {
-    if (title === null) {
-        return ""
-    }
-    return title.trim()[0].toUpperCase() + title.trim().substr(1).toLowerCase()
-}
-
-const getRollbackMassage = function (price) {
-    if (price >= 30000) {
-        return "Даем скидку в 10%"
-    } else if (price >= 15000 && price < 30000) {
-        return "Даем скидку в 5%"
-    } else if (price >= 0 && price < 15000) {
-        return "Скидка не предусмотрена"
-    } else {
-        return "Что то пошло не так"
-    }
-}
-
-// Переопределили значение определенным переменным, мы назначили значением данных переменных результат выполнения определенных функции
-asking()
-allServicePrices = getAllServicePrices()
-fullPrice = getFullPrice()
-title = getTitle()
-servicePercentPrice = getTitle()
-
-
-// Вызываем все необходимое в консоли
-console.log("allServicePrices", allServicePrices)
-
-console.log(getRollbackMassage(fullPrice));
-console.log(typeof title);
-console.log(typeof screenPrice);
-console.log(typeof adaptive);
-
-console.log(screens.length);
-console.log(servicePercentPrice);
-
-console.log("Стоимость верстки экранов " + screenPrice + " юаней" + " и " + "Стоимость разработки сайта " + fullPrice + " юаней");
+appData.start(); // Вызываем метод start для выполнения всех действий
